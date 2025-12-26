@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anqi's Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #d88fff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            cursor: default;
+            background-color: #020617;
+            color: #cbd5e1;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d88fff;
+        }
+
+        /* Keyframe Animations */
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -10%); }
+            20% { transform: translate(-15%, 5%); }
+            30% { transform: translate(7%, -25%); }
+            40% { transform: translate(-5%, 25%); }
+            50% { transform: translate(-15%, 10%); }
+            60% { transform: translate(15%, 0%); }
+            70% { transform: translate(0%, 15%); }
+            80% { transform: translate(3%, 35%); }
+            90% { transform: translate(-10%, 10%); }
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .animate-gradient {
+            background-size: 200% auto;
+            animation: gradient 4s linear infinite;
+        }
+
+        .animate-marquee {
+            animation: marquee 40s linear infinite;
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Enhanced Scroll Entrance Animation (Fade Up + Blur) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            filter: blur(5px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform, filter;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        /* Stagger delays for children */
+        .delay-child-1 { transition-delay: 0.1s; }
+        .delay-child-2 { transition-delay: 0.2s; }
+        .delay-child-3 { transition-delay: 0.3s; }
+        .delay-child-4 { transition-delay: 0.4s; }
+
+        /* Entrance Animation for Hero (On Load) */
+        .animate-entrance-up {
+            animation: entranceUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        @keyframes entranceUp {
+            from { opacity: 0; transform: translateY(40px); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stroke-text {
+            -webkit-text-stroke: 1px #475569;
+            color: transparent;
+        }
+
+        /* Enhanced Hover Effects */
+        .hover-lift {
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px -10px rgba(216, 143, 255, 0.2);
+        }
+
+        .card-glow {
+            transition: all 0.3s ease;
+        }
+        .card-glow:hover {
+            box-shadow: 0 0 30px rgba(216, 143, 255, 0.15);
+            border-color: rgba(216, 143, 255, 0.4);
+        }
+
+        .image-card {
+            overflow: hidden;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        .image-card img {
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.5s ease;
+        }
+        .image-card:hover img {
+            transform: scale(1.08);
+        }
+        .image-card:hover {
+            border-color: rgba(216, 143, 255, 0.5);
+            box-shadow: 0 10px 30px -5px rgba(216, 143, 255, 0.2);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 50%;
+            background-color: #d88fff;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .selection-purple::selection {
+            background: #d88fff;
+            color: #000;
+        }
+        
+        /* 3D Perspective for Cards */
+        .perspective-container {
+            perspective: 1000px;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#020617',
+                        brand: '#d88fff',
+                        brandDark: '#a76ac7',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark text-slate-300 antialiased selection-purple overflow-x-hidden">
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-purple-900/20 rounded-full blur-[120px] animate-pulse" style="animation-duration: 8s;"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[800px] h-[800px] bg-fuchsia-900/10 rounded-full blur-[120px]"></div>
+        <div class="absolute inset-0 opacity-[0.05] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] animate-[grain_8s_steps(10)_infinite]"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 start-0 glass-panel transition-all duration-300 transform translate-y-0" id="navbar">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse group">
+                <span class="self-center text-xl font-display font-semibold whitespace-nowrap text-white group-hover:text-brand transition-colors tracking-tight">Dream with Anqi.</span>
+            </a>
+            <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-400 rounded-lg md:hidden hover:bg-white/10 focus:outline-none transition-colors" aria-controls="navbar-default" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                </svg>
+            </button>
+            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 text-sm">
+                    <li><a href="#about" class="block py-2 px-3 text-white hover:text-brand transition-colors nav-link">About</a></li>
+                    <li><a href="#work" class="block py-2 px-3 text-slate-400 hover:text-brand transition-colors nav-link">Work</a></li>
+                    <li><a href="#experience" class="block py-2 px-3 text-slate-400 hover:text-brand transition-colors nav-link">Experience</a></li>
+                    <li><a href="#education" class="block py-2 px-3 text-slate-400 hover:text-brand transition-colors nav-link">Education</a></li>
+                    <li><a href="#contact" class="block py-2 px-3 text-slate-400 hover:text-brand transition-colors nav-link">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative z-10 min-h-screen flex items-center justify-center pt-20 px-6">
+        <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            
+            <div class="space-y-8 animate-entrance-up">
+                <div class="inline-flex items-center px-3 py-1 rounded-full border border-brand/30 bg-brand/10 text-brand text-xs font-medium uppercase tracking-wider transform hover:scale-105 transition-transform cursor-default">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand mr-2 animate-pulse"></span>
+                    Available for projects
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight tracking-tighter text-white">
+                    Content <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#d88fff] via-purple-400 to-[#d88fff] animate-gradient">Creator</span>
+                </h1>
+                
+                <p class="text-lg text-slate-400 max-w-lg leading-relaxed border-l-2 border-brand/50 pl-6">
+                    Editor, Video Producer, Translator, and Content Creator. 
+                    Specializing in script writing, storyboard creation, and MG animation for YouTube and TikTok.
+                </p>
+
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <a href="#work" class="px-8 py-3.5 rounded-full bg-[#d88fff] text-slate-950 font-bold hover:bg-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(216,143,255,0.5)] active:scale-95">
+                        View Projects
+                    </a>
+                    <a href="#contact" class="px-8 py-3.5 rounded-full border border-slate-700 hover:border-[#d88fff] text-white transition-all duration-300 hover:bg-[#d88fff]/10 hover:-translate-y-1 active:translate-y-0">
+                        Contact Me
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Image -->
+            <div class="relative animate-entrance-up delay-200 hidden md:block group perspective-container">
+                <div class="relative w-full aspect-[4/5] mx-auto max-w-md transform transition-transform duration-700 group-hover:rotate-y-6 animate-float">
+                    <!-- Rotating BG element -->
+                    <div class="absolute -inset-4 border border-[#d88fff]/30 rounded-2xl -z-10 rotate-6 translate-x-4 translate-y-4 transition-transform duration-500 group-hover:rotate-12 group-hover:translate-x-6"></div>
+                    
+                    <!-- Main Image -->
+                    <div class="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl hover:shadow-[#d88fff]/20 transition-all duration-500 z-10 bg-slate-800 rotate-3 group-hover:rotate-0 group-hover:scale-[1.02]">
+                        <img src="https://i.imgur.com/1UrANJ1.jpeg" alt="Creative Portrait" class="object-cover w-full h-full opacity-100 saturate-[0.6] group-hover:saturate-100 transition-all duration-500">
+                        <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-transparent translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                            <p class="text-white font-medium text-lg">Anqi</p>
+                            <p class="text-xs text-brand tracking-wider uppercase">Visual Storytelling</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="relative z-10 py-24 px-6 border-t border-slate-800/50 bg-slate-950/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+                <div class="md:col-span-4 space-y-6 reveal">
+                    <h2 class="text-4xl font-display font-bold text-white">Who Am I?</h2>
+                    <div class="h-1 w-20 bg-[#d88fff] rounded-full"></div>
+                    
+                    <!-- Personal Vibe Image -->
+                    <div class="rounded-2xl overflow-hidden mt-8 aspect-square relative group border border-slate-800 hover-lift card-glow">
+                        <img src="https://i.imgur.com/697tHCu.jpeg" alt="Personal vibe" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110 saturate-[0.4] group-hover:saturate-100">
+                        <div class="absolute inset-0 bg-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-8 space-y-6 text-lg text-slate-300 leading-relaxed font-light reveal delay-child-1">
+                    <p>
+                        I'm a video producer at <strong class="text-white hover:text-brand transition-colors cursor-default">italki</strong> (2023-now), handling script writing, storyboard creation, video editing, and MG animation for YouTube and TikTok ads.
+                    </p>
+                    <p>
+                        I love pop culture and often participate in promotional and photography activities for stage arts. With extensive experience in video studios and MCN organizations, I've worked on content for brands like <strong class="text-white hover:text-brand transition-colors cursor-default">Sweaty Betty, Lululemon, Kao, and Dyson</strong>.
+                    </p>
+                    <p>
+                        I have collaborated with influencers such as <span class="text-brand">花小雕</span>, <span class="text-brand">郑鑫Echo</span>, and <span class="text-brand">Yawning Lion</span>. A documentary I worked on, <em class="text-white">"Mi Nombre Es..."</em>, was shortlisted by the Spanish Equality Department Women's Association.
+                    </p>
+                    <p class="text-sm text-slate-500 italic border-l-2 border-brand pl-4 py-2 bg-white/5 rounded-r-lg">
+                        Since 2021, I’ve also been running a small channel with friends, where we discuss a variety of topics in a lighthearted way. I currently volunteer with 月来月好, working on social media communications and conducting street interviews.
+                    </p>
+                    
+                    <!-- Skill Icons -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
+                        <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center hover:border-brand/50 hover:bg-slate-800 hover:shadow-[0_10px_20px_-5px_rgba(216,143,255,0.15)] transition-all duration-300 hover:-translate-y-2 group reveal delay-child-1">
+                            <div class="text-3xl mb-2 group-hover:scale-110 transition-transform duration-300">📹</div>
+                            <div class="text-sm font-medium text-slate-400 group-hover:text-white">Production</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center hover:border-brand/50 hover:bg-slate-800 hover:shadow-[0_10px_20px_-5px_rgba(216,143,255,0.15)] transition-all duration-300 hover:-translate-y-2 group reveal delay-child-2">
+                            <div class="text-3xl mb-2 group-hover:scale-110 transition-transform duration-300">🎬</div>
+                            <div class="text-sm font-medium text-slate-400 group-hover:text-white">Editing</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center hover:border-brand/50 hover:bg-slate-800 hover:shadow-[0_10px_20px_-5px_rgba(216,143,255,0.15)] transition-all duration-300 hover:-translate-y-2 group reveal delay-child-3">
+                            <div class="text-3xl mb-2 group-hover:scale-110 transition-transform duration-300">🖊️</div>
+                            <div class="text-sm font-medium text-slate-400 group-hover:text-white">Scripting</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center hover:border-brand/50 hover:bg-slate-800 hover:shadow-[0_10px_20px_-5px_rgba(216,143,255,0.15)] transition-all duration-300 hover:-translate-y-2 group reveal delay-child-4">
+                            <div class="text-3xl mb-2 group-hover:scale-110 transition-transform duration-300">🗣️</div>
+                            <div class="text-sm font-medium text-slate-400 group-hover:text-white">Translation</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Marquee -->
+    <section class="py-16 border-y border-slate-800 bg-slate-900/30 overflow-hidden relative reveal">
+        <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-dark to-transparent z-10"></div>
+        <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-dark to-transparent z-10"></div>
+        
+        <div class="relative flex overflow-x-hidden group">
+            <div class="animate-marquee whitespace-nowrap flex space-x-16 items-center">
+                <!-- First Set -->
+                <span class="text-5xl font-display font-bold text-slate-800 uppercase hover:text-brand transition-colors duration-500 cursor-default hover:scale-105 transform">Adobe Premiere</span>
+                <span class="text-5xl font-display font-bold stroke-text hover:text-white transition-colors duration-500 cursor-default hover:scale-105 transform">Final Cut Pro X</span>
+                <span class="text-5xl font-display font-bold text-slate-800 uppercase hover:text-brand transition-colors duration-500 cursor-default hover:scale-105 transform">After Effects</span>
+                <span class="text-5xl font-display font-bold stroke-text hover:text-white transition-colors duration-500 cursor-default hover:scale-105 transform">DaVinci Resolve</span>
+                <span class="text-5xl font-display font-bold text-slate-800 uppercase hover:text-brand transition-colors duration-500 cursor-default hover:scale-105 transform">Sony Alpha</span>
+                <span class="text-5xl font-display font-bold stroke-text hover:text-white transition-colors duration-500 cursor-default hover:scale-105 transform">Spanish (B2-C1)</span>
+                <span class="text-5xl font-display font-bold text-slate-800 uppercase hover:text-brand transition-colors duration-500 cursor-default hover:scale-105 transform">English (C1)</span>
+                <span class="text-5xl font-display font-bold stroke-text hover:text-white transition-colors duration-500 cursor-default hover:scale-105 transform">Figma</span>
+                <!-- Second Set -->
+                <span class="text-5xl font-display font-bold text-slate-800 uppercase hover:text-brand transition-colors duration-500 cursor-default hover:scale-105 transform">Adobe Premiere</span>
+                <span class="text-5xl font-display font-bold stroke-text hover:text-white transition-colors duration-500 cursor-default hover:scale-105 transform">Final Cut Pro X</span>
+                <span class="text-5xl font-display font-bold text-slate-800 uppercase hover:text-brand transition-colors duration-500 cursor-default hover:scale-105 transform">After Effects</span>
+                <span class="text-5xl font-display font-bold stroke-text hover:text-white transition-colors duration-500 cursor-default hover:scale-105 transform">DaVinci Resolve</span>
+                <span class="text-5xl font-display font-bold text-slate-800 uppercase hover:text-brand transition-colors duration-500 cursor-default hover:scale-105 transform">Sony Alpha</span>
+                <span class="text-5xl font-display font-bold stroke-text hover:text-white transition-colors duration-500 cursor-default hover:scale-105 transform">Spanish (B2-C1)</span>
+                <span class="text-5xl font-display font-bold text-slate-800 uppercase hover:text-brand transition-colors duration-500 cursor-default hover:scale-105 transform">English (C1)</span>
+                <span class="text-5xl font-display font-bold stroke-text hover:text-white transition-colors duration-500 cursor-default hover:scale-105 transform">Figma</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Selected Works -->
+    <section id="work" class="relative z-10 py-24 px-6">
+        <div class="max-w-6xl mx-auto space-y-12">
+            <div class="flex justify-between items-end reveal">
+                <div>
+                    <h2 class="text-5xl font-display font-bold text-white mb-2">Selected Works</h2>
+                    <p class="text-slate-500">Curated video projects & campaigns</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Project 1 -->
+                <a href="https://youtu.be/pF9wvpcMUE8" target="_blank" class="group relative block rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 image-card hover-lift reveal">
+                    <div class="aspect-video overflow-hidden bg-slate-800 relative">
+                        <img src="https://i.imgur.com/HTznFi4.jpeg" alt="italki Series" class="w-full h-full object-cover opacity-90 saturate-[0.4] group-hover:opacity-100 group-hover:saturate-100">
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span class="px-6 py-2 rounded-full bg-brand text-slate-900 font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg shadow-brand/20">Watch on YouTube</span>
+                        </div>
+                    </div>
+                    <div class="p-6 relative z-20 bg-slate-900/90 backdrop-blur-sm">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">italki Learning Progress Series</h3>
+                            <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded group-hover:border-brand/30 transition-colors">2024</span>
+                        </div>
+                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Scripting, Editing, Packaging, Actor managing.</p>
+                    </div>
+                </a>
+
+                <!-- Project 2 -->
+                <a href="https://www.youtube.com/watch?v=zBFckrfpnQY&t=2s" target="_blank" class="group relative block rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 image-card hover-lift reveal delay-child-1">
+                    <div class="aspect-video overflow-hidden bg-slate-800 relative">
+                        <img src="https://i.imgur.com/6W2Ma6x.jpeg" alt="italki Ad" class="w-full h-full object-cover opacity-90 saturate-[0.4] group-hover:opacity-100 group-hover:saturate-100">
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span class="px-6 py-2 rounded-full bg-brand text-slate-900 font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg shadow-brand/20">Watch on YouTube</span>
+                        </div>
+                    </div>
+                    <div class="p-6 relative z-20 bg-slate-900/90 backdrop-blur-sm">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">italki Plus Launch Video</h3>
+                            <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded group-hover:border-brand/30 transition-colors">2024</span>
+                        </div>
+                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Scriptwriting, editing, VO artist recruiting, MG effects.</p>
+                    </div>
+                </a>
+
+                <!-- Project 3 -->
+                <a href="https://www.bilibili.com/video/BV1QB4y1C7ek/" target="_blank" class="group relative block rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 image-card hover-lift reveal delay-child-2">
+                    <div class="aspect-video overflow-hidden bg-slate-800 relative">
+                        <img src="https://i.imgur.com/iUVYylK.jpeg" alt="Coats Film" class="w-full h-full object-cover opacity-90 saturate-[0.4] group-hover:opacity-100 group-hover:saturate-100">
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span class="px-6 py-2 rounded-full bg-brand text-slate-900 font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg shadow-brand/20">Watch on Bilibili</span>
+                        </div>
+                    </div>
+                    <div class="p-6 relative z-20 bg-slate-900/90 backdrop-blur-sm">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Coats Fashion Designer Film</h3>
+                            <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded group-hover:border-brand/30 transition-colors">2021</span>
+                        </div>
+                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Editing, cinematography, motion effects, color grading.</p>
+                    </div>
+                </a>
+
+                <!-- Project 4 -->
+                <a href="https://vimeo.com/389304691" target="_blank" class="group relative block rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 image-card hover-lift reveal delay-child-3">
+                    <div class="aspect-video overflow-hidden bg-slate-800 relative">
+                        <img src="https://i.imgur.com/iwb4Nk1.jpeg" alt="Documentary" class="w-full h-full object-cover opacity-90 saturate-[0.4] group-hover:opacity-100 group-hover:saturate-100">
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span class="px-6 py-2 rounded-full bg-brand text-slate-900 font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg shadow-brand/20">Watch on Vimeo</span>
+                        </div>
+                    </div>
+                    <div class="p-6 relative z-20 bg-slate-900/90 backdrop-blur-sm">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">"Mi nombre es..." Documentary</h3>
+                            <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded group-hover:border-brand/30 transition-colors">2019</span>
+                        </div>
+                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Shortlisted by Spanish Equality Dept Women's Association.</p>
+                    </div>
+                </a>
+
+                <!-- Project 5 -->
+                <a href="https://mp.weixin.qq.com/s/ccRKGg_ed3IWXr8_oe3hpQ" target="_blank" class="group relative block rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 image-card hover-lift reveal delay-child-4 md:col-span-2">
+                    <div class="aspect-video md:aspect-[21/9] overflow-hidden bg-slate-800 relative">
+                        <img src="https://i.imgur.com/vpFUVWn.png=80&w=800&auto=format&fit=crop" alt="LAHEXPO Interview" class="w-full h-full object-cover opacity-90 saturate-[0.4] group-hover:opacity-100 group-hover:saturate-100">
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span class="px-6 py-2 rounded-full bg-brand text-slate-900 font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg shadow-brand/20">View Project</span>
+                        </div>
+                    </div>
+                    <div class="p-6 relative z-20 bg-slate-900/90 backdrop-blur-sm">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">LAHEXPO with 月来月好 (feat. B.Peachy)</h3>
+                            <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded group-hover:border-brand/30 transition-colors">2025</span>
+                        </div>
+                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Captured unscripted conversations on menstrual health through street interviews, taking the project from on-site filming to final edit to make hidden topics visible.</p>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Timeline -->
+    <section id="experience" class="relative z-10 py-24 px-6 border-t border-slate-800/50">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-display font-bold text-white mb-16 text-center reveal">Professional Path</h2>
+
+            <div class="relative border-l border-slate-800 ml-4 md:ml-10 space-y-8">
+                
+                <!-- Item 1 -->
+                <div class="relative pl-8 md:pl-12 group reveal delay-child-1">
+                    <div class="absolute -left-[5px] top-4 w-2.5 h-2.5 rounded-full bg-[#d88fff] group-hover:scale-150 transition-transform duration-300 shadow-[0_0_10px_rgba(216,143,255,0.5)] z-10"></div>
+                    <div class="p-4 -ml-4 rounded-xl hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Video Producer @ italki</h3>
+                            <span class="text-xs text-brand font-mono bg-brand/10 px-2 py-1 rounded border border-brand/20">2023.02 - Present</span>
+                        </div>
+                        <ul class="list-disc list-outside ml-4 text-slate-400 space-y-1 text-sm md:text-base marker:text-brand/50 group-hover:marker:text-brand transition-colors">
+                            <li>Production of video advertising materials for Youtube/TikTok.</li>
+                            <li>Creativity: script writing, storyboarding and animation craft.</li>
+                            <li>Fiverr video creator resource management.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="relative pl-8 md:pl-12 group reveal delay-child-2">
+                    <div class="absolute -left-[5px] top-4 w-2.5 h-2.5 rounded-full bg-slate-600 group-hover:bg-brand group-hover:scale-150 transition-all duration-300 z-10"></div>
+                    <div class="p-4 -ml-4 rounded-xl hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Video Post-production @ Kanvid Studio</h3>
+                            <span class="text-xs text-slate-500 font-mono">2021.12 - 2022.12</span>
+                        </div>
+                        <p class="text-slate-400 mb-2 text-sm md:text-base">
+                            Editing, color grading, and packaging for brands including <span class="text-slate-200">Sweaty Betty, Lululemon, Abercrombie & Fitch</span>. Produced corporate promo films and brand wall animations.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="relative pl-8 md:pl-12 group reveal delay-child-3">
+                    <div class="absolute -left-[5px] top-4 w-2.5 h-2.5 rounded-full bg-slate-600 group-hover:bg-brand group-hover:scale-150 transition-all duration-300 z-10"></div>
+                    <div class="p-4 -ml-4 rounded-xl hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Photographer/Editor @ Shanghai Cangrui</h3>
+                            <span class="text-xs text-slate-500 font-mono">2020.08 - 2021.04</span>
+                        </div>
+                        <p class="text-slate-400 text-sm md:text-base">Filming and Post-production for Rémy Martin, Honma. Shot and edited KOL social content.</p>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="relative pl-8 md:pl-12 group reveal delay-child-4">
+                    <div class="absolute -left-[5px] top-4 w-2.5 h-2.5 rounded-full bg-slate-600 group-hover:bg-brand group-hover:scale-150 transition-all duration-300 z-10"></div>
+                     <div class="p-4 -ml-4 rounded-xl hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Editor @ Shanghai Zaishan Culture</h3>
+                            <span class="text-xs text-slate-500 font-mono">2019.12 - 2020.05</span>
+                        </div>
+                        <p class="text-slate-400 text-sm md:text-base">Edited content for MCN celebrities (Zheng Xin Echo, Arisa Doll). Worked on brand warm-up videos for Dyson and Kao.</p>
+                    </div>
+                </div>
+
+                 <div class="relative pl-8 md:pl-12 group reveal">
+                    <div class="absolute -left-[5px] top-4 w-2.5 h-2.5 rounded-full bg-slate-600 group-hover:bg-brand group-hover:scale-150 transition-all duration-300 z-10"></div>
+                    <div class="p-4 -ml-4 rounded-xl hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Writer/Videographer @ SH Int. Dance Center</h3>
+                            <span class="text-xs text-slate-500 font-mono">2018 - Present</span>
+                        </div>
+                        <p class="text-slate-400 text-sm md:text-base">Writing stage art promotional articles and shooting theater materials.</p>
+                    </div>
+                </div>
+
+                <!-- Item 6: Cup of China -->
+                <div class="relative pl-8 md:pl-12 group reveal">
+                    <div class="absolute -left-[5px] top-4 w-2.5 h-2.5 rounded-full bg-slate-600 group-hover:bg-brand group-hover:scale-150 transition-all duration-300 z-10"></div>
+                    <div class="p-4 -ml-4 rounded-xl hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Reporter @ Cup of China (ISU GP)</h3>
+                            <span class="text-xs text-slate-500 font-mono">2016&2017.11</span>
+                        </div>
+                        <p class="text-slate-400 text-sm md:text-base">Covered the international figure skating competition, writing athlete profiles and event news.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Academic Background (New Section) -->
+    <section id="education" class="relative z-10 py-24 px-6 border-t border-slate-800/50 bg-slate-900/20">
+        <div class="max-w-6xl mx-auto">
+             <h2 class="text-4xl font-display font-bold text-white mb-12 text-center reveal">Academic Background</h2>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Card 1 -->
+                <div class="p-8 rounded-2xl bg-slate-900 border border-slate-800 hover:border-brand/50 hover:bg-slate-800/80 transition-all duration-300 group hover:-translate-y-2 reveal delay-child-1">
+                    <div class="flex justify-between items-start mb-4">
+                         <div class="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center text-2xl">🎓</div>
+                         <span class="px-3 py-1 rounded-full border border-slate-700 text-xs font-mono text-slate-400">2019 Graduate</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-brand transition-colors">Complutense University of Madrid</h3>
+                    <p class="text-sm text-slate-500 mb-4"></p>
+                    <div class="space-y-2 text-slate-400">
+                        <p><span class="text-brand">Major:</span> Audiovisual Communication in the Digital Age</p>
+                        <p class="text-sm text-slate-500"></p>
+                        <p><span class="text-brand">Degree:</span> Master's </p>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="p-8 rounded-2xl bg-slate-900 border border-slate-800 hover:border-brand/50 hover:bg-slate-800/80 transition-all duration-300 group hover:-translate-y-2 reveal delay-child-2">
+                    <div class="flex justify-between items-start mb-4">
+                         <div class="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center text-2xl">🎓</div>
+                         <span class="px-3 py-1 rounded-full border border-slate-700 text-xs font-mono text-slate-400">2017 Graduate</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-brand transition-colors">Jilin International Studies University</h3>
+                    <p class="text-sm text-slate-500 mb-4"></p>
+                    <div class="space-y-2 text-slate-400">
+                        <p><span class="text-brand">Major:</span> Spanish </p>
+                        <p><span class="text-brand">Degree:</span> Bachelor's </p>
+                        <p><span class="text-brand">GPA:</span> 3.26</p>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </section>
+
+    <!-- Visual Break / Gallery -->
+    <section class="py-12 bg-black border-t border-slate-900">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 h-[400px]">
+            <!-- Gallery 1 -->
+            <div class="relative group overflow-hidden h-full reveal delay-child-1">
+                <img src="https://i.imgur.com/zA2oCMM.jpeg" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100 saturate-[0.4] group-hover:saturate-100" alt="Gallery">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+            </div>
+             <!-- Gallery 2 -->
+            <div class="relative group overflow-hidden h-full reveal delay-child-2">
+                <img src="https://i.imgur.com/FDSsMue.jpeg" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100 saturate-[0.4] group-hover:saturate-100" alt="Gallery">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                <div class="absolute bottom-6 left-6 text-white font-mono opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">Stage & Performance</div>
+            </div>
+             <!-- Gallery 3 -->
+            <div class="relative group overflow-hidden h-full reveal delay-child-3">
+                <img src="https://i.imgur.com/gGYLPeD.jpeg" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100 saturate-[0.4] group-hover:saturate-100" alt="Gallery">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+            </div>
+             <!-- Gallery 4 -->
+            <div class="relative group overflow-hidden h-full reveal delay-child-4">
+                <img src="https://i.imgur.com/qIrjU0P.jpeg" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100 saturate-[0.4] group-hover:saturate-100" alt="Gallery">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="relative z-10 py-32 px-6">
+        <div class="max-w-3xl mx-auto text-center space-y-12 reveal">
+            <div class="space-y-4">
+                <h2 class="text-5xl md:text-7xl font-display font-bold text-white tracking-tight">Let's Create.</h2>
+                <p class="text-xl text-slate-400 max-w-xl mx-auto">
+                    Currently open for new opportunities in video production and content creation.
+                </p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-center gap-6 pt-4">
+                <!-- Phone -->
+                <div class="px-8 py-6 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-brand hover:bg-slate-800 hover:shadow-[0_10px_30px_-10px_rgba(216,143,255,0.2)] transition-all duration-300 group cursor-default hover:-translate-y-2 hover-lift">
+                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-2">Phone / WhatsApp</p>
+                    <p class="text-lg md:text-xl font-mono text-white group-hover:text-brand transition-colors">+86 158 6230 1877</p>
+                </div>
+                
+                <!-- Email -->
+                <a href="mailto:avebblanca16@hotmail.com" class="px-8 py-6 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-brand hover:bg-slate-800 hover:shadow-[0_10px_30px_-10px_rgba(216,143,255,0.2)] transition-all duration-300 group hover:-translate-y-2 hover-lift">
+                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-2">Email</p>
+                    <p class="text-lg md:text-xl font-mono text-white group-hover:text-brand transition-colors">avebblanca16@hotmail.com</p>
+                </a>
+            </div>
+
+            <div class="pt-12 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
+                <p class="hover:text-white transition-colors cursor-default">WeChat: <span class="text-slate-300">manifestocyborg</span></p>
+                <p class="mt-4 md:mt-0">&copy; Anqi/Flo 2025.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Intersection Observer for Entrance Animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Keep observing to allow re-animation if you want, or unobserve to run once
+                         observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach(el => observer.observe(el));
+
+            // Navbar background effect on scroll
+            const nav = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    nav.classList.add('shadow-lg', 'bg-dark/90');
+                    nav.classList.remove('glass-panel');
+                } else {
+                    nav.classList.remove('shadow-lg', 'bg-dark/90');
+                    nav.classList.add('glass-panel');
+                }
+            });
+
+            // Mobile menu toggle logic
+            const btn = document.querySelector('[data-collapse-toggle]');
+            const menu = document.getElementById('navbar-default');
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
