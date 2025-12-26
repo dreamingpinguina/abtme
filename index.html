@@ -6,14 +6,14 @@
     <title>Anqi's Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
 
         :root {
             --primary: #d88fff;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Sans SC', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             cursor: default;
             background-color: #020617;
             color: #cbd5e1;
@@ -21,7 +21,7 @@
         }
 
         h1, h2, h3, h4, .font-display {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Space Grotesk', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
         }
 
         /* Custom Scrollbar */
@@ -82,7 +82,7 @@
             animation: float 6s ease-in-out infinite;
         }
 
-        /* Enhanced Scroll Entrance Animation (Fade Up + Blur) */
+        /* Enhanced Scroll Entrance Animation */
         .reveal {
             opacity: 0;
             transform: translateY(50px);
@@ -97,13 +97,13 @@
             filter: blur(0);
         }
 
-        /* Stagger delays for children */
+        /* Stagger delays */
         .delay-child-1 { transition-delay: 0.1s; }
         .delay-child-2 { transition-delay: 0.2s; }
         .delay-child-3 { transition-delay: 0.3s; }
         .delay-child-4 { transition-delay: 0.4s; }
 
-        /* Entrance Animation for Hero (On Load) */
+        /* Entrance Animation for Hero */
         .animate-entrance-up {
             animation: entranceUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
@@ -187,7 +187,16 @@
         
         /* 3D Perspective for Cards */
         .perspective-container {
-            perspective: 1200px;
+            perspective: 1000px;
+        }
+        
+        /* Lang Switch Transition */
+        .lang-content {
+            transition: opacity 0.3s ease;
+        }
+        .lang-content.hidden {
+            display: none;
+            opacity: 0;
         }
     </style>
     <script>
@@ -219,19 +228,55 @@
             <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse group">
                 <span class="self-center text-xl font-display font-semibold whitespace-nowrap text-white group-hover:text-brand transition-colors tracking-tight">Dream with Anqi.</span>
             </a>
-            <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-400 rounded-lg md:hidden hover:bg-white/10 focus:outline-none transition-colors" aria-controls="navbar-default" aria-expanded="false">
-                <span class="sr-only">Open main menu</span>
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-                </svg>
-            </button>
-            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+            
+            <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse items-center">
+                <!-- Language Switcher -->
+                <button id="lang-switch" class="mr-4 px-3 py-1.5 rounded-full border border-slate-700 bg-slate-800/50 hover:bg-slate-700/50 text-xs font-bold transition-all flex items-center gap-2 group hover:border-brand/50">
+                    <span id="btn-en" class="text-brand transition-colors">EN</span>
+                    <span class="w-[1px] h-3 bg-slate-600"></span>
+                    <span id="btn-cn" class="text-slate-500 transition-colors group-hover:text-slate-300">中</span>
+                </button>
+
+                <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-400 rounded-lg md:hidden hover:bg-white/10 focus:outline-none transition-colors" aria-controls="navbar-default" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="hidden w-full md:block md:w-auto md:order-1" id="navbar-default">
                 <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 text-sm">
-                    <li><a href="#about" class="block py-2 px-3 text-white hover:text-brand transition-colors nav-link">About</a></li>
-                    <li><a href="#work" class="block py-2 px-3 text-slate-400 hover:text-brand transition-colors nav-link">Work</a></li>
-                    <li><a href="#experience" class="block py-2 px-3 text-slate-400 hover:text-brand transition-colors nav-link">Experience</a></li>
-                    <li><a href="#education" class="block py-2 px-3 text-slate-400 hover:text-brand transition-colors nav-link">Education</a></li>
-                    <li><a href="#contact" class="block py-2 px-3 text-slate-400 hover:text-brand transition-colors nav-link">Contact</a></li>
+                    <li>
+                        <a href="#about" class="block py-2 px-3 text-white hover:text-brand transition-colors nav-link">
+                            <span class="lang-en">About</span>
+                            <span class="lang-cn hidden">关于</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#work" class="block py-2 px-3 text-slate-400 hover:text-brand transition-colors nav-link">
+                            <span class="lang-en">Work</span>
+                            <span class="lang-cn hidden">作品</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#experience" class="block py-2 px-3 text-slate-400 hover:text-brand transition-colors nav-link">
+                            <span class="lang-en">Experience</span>
+                            <span class="lang-cn hidden">经历</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#education" class="block py-2 px-3 text-slate-400 hover:text-brand transition-colors nav-link">
+                            <span class="lang-en">Education</span>
+                            <span class="lang-cn hidden">教育</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#contact" class="block py-2 px-3 text-slate-400 hover:text-brand transition-colors nav-link">
+                            <span class="lang-en">Contact</span>
+                            <span class="lang-cn hidden">联系</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -244,24 +289,32 @@
             <div class="space-y-8 animate-entrance-up">
                 <div class="inline-flex items-center px-3 py-1 rounded-full border border-brand/30 bg-brand/10 text-brand text-xs font-medium uppercase tracking-wider transform hover:scale-105 transition-transform cursor-default">
                     <span class="w-1.5 h-1.5 rounded-full bg-brand mr-2 animate-pulse"></span>
-                    Available for projects
+                    <span class="lang-en">Available for projects</span>
+                    <span class="lang-cn hidden">接受项目合作</span>
                 </div>
                 
-                <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight tracking-tighter text-white">
-                    Content <br/>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#d88fff] via-purple-400 to-[#d88fff] animate-gradient">Creator</span>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight tracking-tighter text-white font-display">
+                    <span class="lang-en">Content <br/></span>
+                    <span class="lang-cn hidden">内容 <br/></span>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#d88fff] via-purple-400 to-[#d88fff] animate-gradient">
+                        <span class="lang-en">Creator</span>
+                        <span class="lang-cn hidden">创作者</span>
+                    </span>
                 </h1>
                 
                 <p class="text-lg text-slate-400 max-w-lg leading-relaxed border-l-2 border-brand/50 pl-6">
-                    Editor, Video Producer, Translator, and Content Creator. 
+                    <span class="lang-en">Editor, Video Producer, Translator, and Content Creator.</span>
+                    <span class="lang-cn hidden">剪辑师 · 视频制作人 · 翻译 · 内容创作者</span>
                 </p>
 
                 <div class="flex flex-wrap gap-4 pt-2">
                     <a href="#work" class="px-8 py-3.5 rounded-full bg-[#d88fff] text-slate-950 font-bold hover:bg-white transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(216,143,255,0.5)] active:scale-95">
-                        View Projects
+                        <span class="lang-en">View Projects</span>
+                        <span class="lang-cn hidden">查看作品</span>
                     </a>
                     <a href="#contact" class="px-8 py-3.5 rounded-full border border-slate-700 hover:border-[#d88fff] text-white transition-all duration-300 hover:bg-[#d88fff]/10 hover:-translate-y-1 active:translate-y-0">
-                        Contact Me
+                        <span class="lang-en">Contact Me</span>
+                        <span class="lang-cn hidden">联系我</span>
                     </a>
                 </div>
             </div>
@@ -290,7 +343,10 @@
         <div class="max-w-6xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
                 <div class="md:col-span-4 space-y-6 reveal">
-                    <h2 class="text-4xl font-display font-bold text-white">Who Am I?</h2>
+                    <h2 class="text-4xl font-display font-bold text-white">
+                        <span class="lang-en">Who Am I?</span>
+                        <span class="lang-cn hidden">我是谁？</span>
+                    </h2>
                     <div class="h-1 w-20 bg-[#d88fff] rounded-full"></div>
                     
                     <!-- Personal Vibe Image -->
@@ -302,35 +358,51 @@
                 
                 <div class="md:col-span-8 space-y-6 text-lg text-slate-300 leading-relaxed font-light reveal delay-child-1">
                     <p>
-                        I'm a video producer at <strong class="text-white hover:text-brand transition-colors cursor-default">italki</strong> (2023-now), handling script writing, storyboard creation, video editing, and MG animation for YouTube and TikTok ads.
+                        <span class="lang-en">I'm a video producer at <strong class="text-white hover:text-brand transition-colors cursor-default">italki</strong> (2023-now), handling script writing, storyboard creation, video editing, and MG animation for YouTube and TikTok ads.</span>
+                        <span class="lang-cn hidden">我目前在 <strong class="text-white hover:text-brand transition-colors cursor-default">italki</strong> 担任视频制作人 (2023至今)，主要负责YouTube和TikTok广告的脚本撰写、分镜设计、视频剪辑以及MG动画制作。</span>
                     </p>
                     <p>
-                        I love pop culture and often participate in promotional and photography activities for stage arts. With extensive experience in video studios and MCN organizations, I've worked on content for brands like <strong class="text-white hover:text-brand transition-colors cursor-default">Sweaty Betty, Lululemon, Kao, and Dyson</strong>.
+                        <span class="lang-en">I love pop culture and often participate in promotional and photography activities for stage arts. With extensive experience in video studios and MCN organizations, I've worked on content for brands like <strong class="text-white hover:text-brand transition-colors cursor-default">Sweaty Betty, Kao, and Dyson</strong>.</span>
+                        <span class="lang-cn hidden">我热爱流行文化，经常参与舞台艺术的宣传和摄影活动。我拥有丰富的视频工作室和MCN机构工作经验，曾为 <strong class="text-white hover:text-brand transition-colors cursor-default">Sweaty Betty, Kao (花王), Dyson</strong> 等品牌制作内容。</span>
                     </p>
                     <p>
-                        I have collaborated with influencers such as <span class="text-brand">花小雕</span>, <span class="text-brand">郑鑫Echo</span>, and <span class="text-brand">Yawning Lion</span>. A documentary I worked on, <em class="text-white">"Mi Nombre Es..."</em>, was shortlisted by the Spanish Equality Department Women's Association.
+                        <span class="lang-en">I have collaborated with influencers such as <span class="text-brand">Hua Xiaodiao</span>, <span class="text-brand">Zheng Xin Echo</span>, and <span class="text-brand">Yawning Lion</span>. A documentary I worked on, <em class="text-white">"Mi Nombre Es..."</em>, was shortlisted by the Spanish Equality Department Women's Association.</span>
+                        <span class="lang-cn hidden">我曾与 <span class="text-brand">花小雕</span>, <span class="text-brand">郑鑫Echo</span>, 和 <span class="text-brand">Yawning Lion</span> 等知名博主合作。我参与制作的纪录片 <em class="text-white">"Mi Nombre Es..."</em> 曾入围西班牙平等部妇女协会奖项。</span>
                     </p>
                     <p class="text-sm text-slate-500 italic border-l-2 border-brand pl-4 py-2 bg-white/5 rounded-r-lg">
-                        Since 2021, I’ve also been running a small channel with my bestie, where we discuss a variety of topics in a lighthearted way. I currently volunteer with a grassroots social organization, focusing on social media communications and street interviews.
+                        <span class="lang-en">Since 2021, I’ve also been running a small channel with friends, where we discuss a variety of topics in a lighthearted way. I currently volunteer with some grassroots social organizations, focusing on social media communications and street interviews.</span>
+                        <span class="lang-cn hidden">2021年起和朋友一起开始做自己的小频道，侃天侃地，严肃不正经。目前，我也在一些民间组织做志愿者，专注社交媒体传播和街头采访。</span>
                     </p>
                     
                     <!-- Skill Icons -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
                         <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center hover:border-brand/50 hover:bg-slate-800 hover:shadow-[0_10px_20px_-5px_rgba(216,143,255,0.15)] transition-all duration-300 hover:-translate-y-2 group reveal delay-child-1">
                             <div class="text-3xl mb-2 group-hover:scale-110 transition-transform duration-300">📹</div>
-                            <div class="text-sm font-medium text-slate-400 group-hover:text-white">Production</div>
+                            <div class="text-sm font-medium text-slate-400 group-hover:text-white">
+                                <span class="lang-en">Production</span>
+                                <span class="lang-cn hidden">视频制作</span>
+                            </div>
                         </div>
                         <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center hover:border-brand/50 hover:bg-slate-800 hover:shadow-[0_10px_20px_-5px_rgba(216,143,255,0.15)] transition-all duration-300 hover:-translate-y-2 group reveal delay-child-2">
                             <div class="text-3xl mb-2 group-hover:scale-110 transition-transform duration-300">🎬</div>
-                            <div class="text-sm font-medium text-slate-400 group-hover:text-white">Editing</div>
+                            <div class="text-sm font-medium text-slate-400 group-hover:text-white">
+                                <span class="lang-en">Editing</span>
+                                <span class="lang-cn hidden">剪辑后期</span>
+                            </div>
                         </div>
                         <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center hover:border-brand/50 hover:bg-slate-800 hover:shadow-[0_10px_20px_-5px_rgba(216,143,255,0.15)] transition-all duration-300 hover:-translate-y-2 group reveal delay-child-3">
                             <div class="text-3xl mb-2 group-hover:scale-110 transition-transform duration-300">🖊️</div>
-                            <div class="text-sm font-medium text-slate-400 group-hover:text-white">Scripting</div>
+                            <div class="text-sm font-medium text-slate-400 group-hover:text-white">
+                                <span class="lang-en">Scripting</span>
+                                <span class="lang-cn hidden">脚本撰写</span>
+                            </div>
                         </div>
                         <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center hover:border-brand/50 hover:bg-slate-800 hover:shadow-[0_10px_20px_-5px_rgba(216,143,255,0.15)] transition-all duration-300 hover:-translate-y-2 group reveal delay-child-4">
                             <div class="text-3xl mb-2 group-hover:scale-110 transition-transform duration-300">🗣️</div>
-                            <div class="text-sm font-medium text-slate-400 group-hover:text-white">Translation</div>
+                            <div class="text-sm font-medium text-slate-400 group-hover:text-white">
+                                <span class="lang-en">Translation</span>
+                                <span class="lang-cn hidden">多语翻译</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -372,8 +444,14 @@
         <div class="max-w-6xl mx-auto space-y-12">
             <div class="flex justify-between items-end reveal">
                 <div>
-                    <h2 class="text-5xl font-display font-bold text-white mb-2">Selected Works</h2>
-                    <p class="text-slate-500">Curated video projects & campaigns</p>
+                    <h2 class="text-5xl font-display font-bold text-white mb-2">
+                        <span class="lang-en">Selected Works</span>
+                        <span class="lang-cn hidden">精选作品</span>
+                    </h2>
+                    <p class="text-slate-500">
+                        <span class="lang-en">Curated video projects & campaigns</span>
+                        <span class="lang-cn hidden">视频项目 & 商业广告系列</span>
+                    </p>
                 </div>
             </div>
 
@@ -389,10 +467,16 @@
                     </div>
                     <div class="p-6 relative z-20 bg-slate-900/90 backdrop-blur-sm">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">italki Learning Progress Series</h3>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">
+                                <span class="lang-en">italki Learning Progress Series</span>
+                                <span class="lang-cn hidden">italki 学习进度系列广告</span>
+                            </h3>
                             <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded group-hover:border-brand/30 transition-colors">2024</span>
                         </div>
-                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Scripting, Editing, Packaging, Casting.</p>
+                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">
+                            <span class="lang-en">Scripting, Editing, Packaging, Actor managing.</span>
+                            <span class="lang-cn hidden">脚本撰写、剪辑、包装、演员管理。</span>
+                        </p>
                     </div>
                 </a>
 
@@ -406,10 +490,16 @@
                     </div>
                     <div class="p-6 relative z-20 bg-slate-900/90 backdrop-blur-sm">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">italki Plus Launch Video</h3>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">
+                                <span class="lang-en">italki Plus Launch Video</span>
+                                <span class="lang-cn hidden">italki Plus 发布视频</span>
+                            </h3>
                             <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded group-hover:border-brand/30 transition-colors">2024</span>
                         </div>
-                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Scriptwriting, editing, VO artist recruiting, MG effects.</p>
+                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">
+                            <span class="lang-en">Scriptwriting, editing, VO artist recruiting, MG effects.</span>
+                            <span class="lang-cn hidden">脚本撰写、剪辑、配音演员招聘、MG动画特效。</span>
+                        </p>
                     </div>
                 </a>
 
@@ -423,10 +513,16 @@
                     </div>
                     <div class="p-6 relative z-20 bg-slate-900/90 backdrop-blur-sm">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Coats Fashion Designer Film</h3>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">
+                                <span class="lang-en">Coats Fashion Designer Film</span>
+                                <span class="lang-cn hidden">Coats 时尚设计师短片</span>
+                            </h3>
                             <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded group-hover:border-brand/30 transition-colors">2021</span>
                         </div>
-                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Editing, cinematography, motion effects, color grading.</p>
+                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">
+                            <span class="lang-en">Editing, cinematography, motion effects, color grading.</span>
+                            <span class="lang-cn hidden">剪辑、摄影、动态特效、调色。</span>
+                        </p>
                     </div>
                 </a>
 
@@ -440,10 +536,16 @@
                     </div>
                     <div class="p-6 relative z-20 bg-slate-900/90 backdrop-blur-sm">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">"Mi nombre es..." Documentary</h3>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">
+                                <span class="lang-en">"Mi nombre es..." Documentary</span>
+                                <span class="lang-cn hidden">"Mi nombre es..." 纪录片</span>
+                            </h3>
                             <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded group-hover:border-brand/30 transition-colors">2019</span>
                         </div>
-                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Shortlisted by Spanish Equality Dept Women's Association.</p>
+                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">
+                            <span class="lang-en">Shortlisted by Spanish Equality Dept Women's Association.</span>
+                            <span class="lang-cn hidden">入围西班牙平等部妇女协会奖项。</span>
+                        </p>
                     </div>
                 </a>
 
@@ -452,15 +554,24 @@
                     <div class="aspect-video md:aspect-[21/9] overflow-hidden bg-slate-800 relative">
                         <img src="https://i.imgur.com/vpFUVWn.png=80&w=800&auto=format&fit=crop" alt="LAHEXPO Interview" class="w-full h-full object-cover opacity-90 saturate-[0.4] group-hover:opacity-100 group-hover:saturate-100">
                         <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <span class="px-6 py-2 rounded-full bg-brand text-slate-900 font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg shadow-brand/20">View Project</span>
+                            <span class="px-6 py-2 rounded-full bg-brand text-slate-900 font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-lg shadow-brand/20">
+                                <span class="lang-en">View Project</span>
+                                <span class="lang-cn hidden">查看项目</span>
+                            </span>
                         </div>
                     </div>
                     <div class="p-6 relative z-20 bg-slate-900/90 backdrop-blur-sm">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">LAHEXPO with 月来月好 (feat. B.Peachy)</h3>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">
+                                <span class="lang-en">LAHEXPO with 月来月好 (feat. B.Peachy)</span>
+                                <span class="lang-cn hidden">上马体博会 × 月来月好 (feat. B.Peachy)</span>
+                            </h3>
                             <span class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded group-hover:border-brand/30 transition-colors">2025</span>
                         </div>
-                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">Captured unscripted conversations on menstrual health through street interviews, taking the project from on-site filming to final edit to make hidden topics visible.</p>
+                        <p class="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">
+                            <span class="lang-en">Captured unscripted conversations on menstrual health through street interviews, taking the project from on-site filming to final edit to make hidden topics visible.</span>
+                            <span class="lang-cn hidden">通过街头采访捕捉关于女性健康的真实对话。负责从现场拍摄到最终剪辑的全过程，让隐秘的话题被看见。</span>
+                        </p>
                     </div>
                 </a>
 
@@ -471,7 +582,10 @@
     <!-- Experience Timeline -->
     <section id="experience" class="relative z-10 py-24 px-6 border-t border-slate-800/50">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-4xl font-display font-bold text-white mb-16 text-center reveal">Professional Path</h2>
+            <h2 class="text-4xl font-display font-bold text-white mb-16 text-center reveal">
+                <span class="lang-en">Professional Path</span>
+                <span class="lang-cn hidden">职业生涯</span>
+            </h2>
 
             <div class="relative border-l border-slate-800 ml-4 md:ml-10 space-y-8">
                 
@@ -480,13 +594,25 @@
                     <div class="absolute -left-[5px] top-4 w-2.5 h-2.5 rounded-full bg-[#d88fff] group-hover:scale-150 transition-transform duration-300 shadow-[0_0_10px_rgba(216,143,255,0.5)] z-10"></div>
                     <div class="p-4 -ml-4 rounded-xl hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Video Producer @ italki</h3>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">
+                                <span class="lang-en">Video Producer @ italki</span>
+                                <span class="lang-cn hidden">视频制作人 @ italki</span>
+                            </h3>
                             <span class="text-xs text-brand font-mono bg-brand/10 px-2 py-1 rounded border border-brand/20">2023.02 - Present</span>
                         </div>
                         <ul class="list-disc list-outside ml-4 text-slate-400 space-y-1 text-sm md:text-base marker:text-brand/50 group-hover:marker:text-brand transition-colors">
-                            <li>Production of video advertising materials for Youtube/TikTok.</li>
-                            <li>Creativity: script writing, storyboarding and animation craft.</li>
-                            <li>Fiverr video creator resource management.</li>
+                            <li>
+                                <span class="lang-en">Production of video advertising materials for Youtube/TikTok.</span>
+                                <span class="lang-cn hidden">制作 Youtube/TikTok 视频广告素材。</span>
+                            </li>
+                            <li>
+                                <span class="lang-en">Creativity: script writing, storyboarding and animation craft.</span>
+                                <span class="lang-cn hidden">创意工作：脚本撰写、分镜绘制及动画制作。</span>
+                            </li>
+                            <li>
+                                <span class="lang-en">Fiverr video creator resource management.</span>
+                                <span class="lang-cn hidden">Fiverr 视频创作者资源管理。</span>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -496,11 +622,15 @@
                     <div class="absolute -left-[5px] top-4 w-2.5 h-2.5 rounded-full bg-slate-600 group-hover:bg-brand group-hover:scale-150 transition-all duration-300 z-10"></div>
                     <div class="p-4 -ml-4 rounded-xl hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Video Post-production @ Kanvid Studio</h3>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">
+                                <span class="lang-en">Video Post-production @ Kanvid Studio</span>
+                                <span class="lang-cn hidden">视频后期 @ Kanvid Studio</span>
+                            </h3>
                             <span class="text-xs text-slate-500 font-mono">2021.12 - 2022.12</span>
                         </div>
                         <p class="text-slate-400 mb-2 text-sm md:text-base">
-                            Editing, color grading, and packaging for brands including <span class="text-slate-200">Sweaty Betty, Lululemon, Abercrombie & Fitch</span>. Produced corporate promo films and brand wall animations.
+                            <span class="lang-en">Editing, color grading, and packaging for brands including <span class="text-slate-200">Sweaty Betty, Lululemon, Abercrombie & Fitch</span>. Produced corporate promo films and brand wall animations.</span>
+                            <span class="lang-cn hidden">合作品牌包括 <span class="text-slate-200">Sweaty Betty, Lululemon, Abercrombie & Fitch</span>。负责视频剪辑、调色及包装，制作企业宣传片及品牌墙动画。</span>
                         </p>
                     </div>
                 </div>
@@ -510,10 +640,16 @@
                     <div class="absolute -left-[5px] top-4 w-2.5 h-2.5 rounded-full bg-slate-600 group-hover:bg-brand group-hover:scale-150 transition-all duration-300 z-10"></div>
                     <div class="p-4 -ml-4 rounded-xl hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Photographer/Editor @ Shanghai Cangrui</h3>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">
+                                <span class="lang-en">Photographer/Editor @ Shanghai Cangrui</span>
+                                <span class="lang-cn hidden">摄影/剪辑 @ 上海苍瑞</span>
+                            </h3>
                             <span class="text-xs text-slate-500 font-mono">2020.08 - 2021.04</span>
                         </div>
-                        <p class="text-slate-400 text-sm md:text-base">Filming and Post-production for Rémy Martin, Honma. Shot and edited KOL social content.</p>
+                        <p class="text-slate-400 text-sm md:text-base">
+                            <span class="lang-en">Filming and Post-production for Rémy Martin, Honma. Shot and edited KOL social content.</span>
+                            <span class="lang-cn hidden">为 Rémy Martin, Honma 等品牌进行拍摄与后期制作。负责 KOL 社交媒体内容的拍摄与剪辑。</span>
+                        </p>
                     </div>
                 </div>
 
@@ -522,10 +658,16 @@
                     <div class="absolute -left-[5px] top-4 w-2.5 h-2.5 rounded-full bg-slate-600 group-hover:bg-brand group-hover:scale-150 transition-all duration-300 z-10"></div>
                      <div class="p-4 -ml-4 rounded-xl hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Editor @ Shanghai Zaishan Culture</h3>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">
+                                <span class="lang-en">Editor @ Shanghai Zaishan Culture</span>
+                                <span class="lang-cn hidden">剪辑师 @ 上海在山文化</span>
+                            </h3>
                             <span class="text-xs text-slate-500 font-mono">2019.12 - 2020.05</span>
                         </div>
-                        <p class="text-slate-400 text-sm md:text-base">Edited content for MCN celebrities (Zheng Xin Echo, Arisa Doll). Worked on brand warm-up videos for Dyson and Kao.</p>
+                        <p class="text-slate-400 text-sm md:text-base">
+                            <span class="lang-en">Edited content for MCN celebrities (Zheng Xin Echo, Arisa Doll). Worked on brand warm-up videos for Dyson and Kao.</span>
+                            <span class="lang-cn hidden">负责 MCN 红人 (郑鑫 Echo, Arisa Doll) 的内容剪辑。参与制作 Dyson 和 Kao 的品牌预热视频。</span>
+                        </p>
                     </div>
                 </div>
 
@@ -533,10 +675,16 @@
                     <div class="absolute -left-[5px] top-4 w-2.5 h-2.5 rounded-full bg-slate-600 group-hover:bg-brand group-hover:scale-150 transition-all duration-300 z-10"></div>
                     <div class="p-4 -ml-4 rounded-xl hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Writer/Videographer @ SH Int. Dance Center</h3>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">
+                                <span class="lang-en">Writer/Videographer @ SH Int. Dance Center</span>
+                                <span class="lang-cn hidden">撰稿/摄像 @ 上海国际舞蹈中心</span>
+                            </h3>
                             <span class="text-xs text-slate-500 font-mono">2018 - Present</span>
                         </div>
-                        <p class="text-slate-400 text-sm md:text-base">Writing stage art promotional articles and shooting theater materials.</p>
+                        <p class="text-slate-400 text-sm md:text-base">
+                            <span class="lang-en">Writing stage art promotional articles and shooting theater materials.</span>
+                            <span class="lang-cn hidden">撰写舞台艺术宣传文章及拍摄剧场素材。</span>
+                        </p>
                     </div>
                 </div>
 
@@ -545,10 +693,16 @@
                     <div class="absolute -left-[5px] top-4 w-2.5 h-2.5 rounded-full bg-slate-600 group-hover:bg-brand group-hover:scale-150 transition-all duration-300 z-10"></div>
                     <div class="p-4 -ml-4 rounded-xl hover:bg-white/5 transition-colors duration-300 border border-transparent hover:border-white/5">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">Reporter @ Cup of China (ISU GP)</h3>
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand transition-colors duration-300">
+                                <span class="lang-en">Reporter @ Cup of China (ISU GP)</span>
+                                <span class="lang-cn hidden">记者 @ 中国杯世界花样滑冰大奖赛</span>
+                            </h3>
                             <span class="text-xs text-slate-500 font-mono">2016&2017.11</span>
                         </div>
-                        <p class="text-slate-400 text-sm md:text-base">Covered the international figure skating competition, writing athlete profiles and event news.</p>
+                        <p class="text-slate-400 text-sm md:text-base">
+                            <span class="lang-en">Covered the international figure skating competition, writing athlete profiles and event news.</span>
+                            <span class="lang-cn hidden">报道国际花样滑冰赛事，撰写运动员简介及赛事新闻。</span>
+                        </p>
                     </div>
                 </div>
 
@@ -556,36 +710,56 @@
         </div>
     </section>
 
-    <!-- Academic Background (New Section) -->
+    <!-- Academic Background -->
     <section id="education" class="relative z-10 py-24 px-6 border-t border-slate-800/50 bg-slate-900/20">
         <div class="max-w-6xl mx-auto">
-             <h2 class="text-4xl font-display font-bold text-white mb-12 text-center reveal">Academic Background</h2>
+             <h2 class="text-4xl font-display font-bold text-white mb-12 text-center reveal">
+                 <span class="lang-en">Education</span>
+                 <span class="lang-cn hidden">教育背景</span>
+             </h2>
              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Card 1 -->
-                <div class="p-8 rounded-2xl bg-slate-900 border border-slate-800 hover:border-brand/50 hover:bg-slate-800/80 transition-all duration-300 group hover:-translate-y-2 reveal delay-child-1">
+                <div class="p-8 rounded-2xl bg-slate-900 border border-slate-800 hover:border-slate-600 transition-all duration-300 group hover:-translate-y-2 reveal delay-child-1 shadow-lg hover:shadow-slate-900/50">
                     <div class="flex justify-between items-start mb-4">
-                         <div class="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center text-2xl">🎓</div>
-                         <span class="px-3 py-1 rounded-full border border-slate-700 text-xs font-mono text-slate-400">2019 Graduate</span>
+                         <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-2xl border border-slate-700">🎓</div>
+                         <span class="px-3 py-1 rounded-full border border-slate-700 text-xs font-mono text-slate-400">Class of 2019</span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-brand transition-colors">Complutense University of Madrid</h3>
-                    <p class="text-sm text-slate-500 mb-4"></p>
-                    <div class="space-y-2 text-slate-400">
-                        <p><span class="text-brand">Major:</span> Audiovisual Communication in the Digital Age</p>
-                        <p class="text-sm text-slate-500"></p>
-                        <p><span class="text-brand">Degree:</span> Master's </p>
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-brand transition-colors">
+                        <span class="lang-en">Complutense University of Madrid</span>
+                        <span class="lang-cn hidden">马德里康普顿斯大学</span>
+                    </h3>
+                    <p class="text-sm text-slate-500 mb-4">Universidad Complutense de Madrid</p>
+                    <div class="space-y-2 text-slate-400 text-sm">
+                        <p><span class="text-brand">Major:</span> 
+                            <span class="lang-en">Audiovisual Communication in the Digital Age</span>
+                            <span class="lang-cn hidden">数字时代的视听传播</span>
+                        </p>
+                        <p><span class="text-brand">Degree:</span> 
+                            <span class="lang-en">Master</span>
+                            <span class="lang-cn hidden">硕士</span>
+                        </p>
                     </div>
                 </div>
                 <!-- Card 2 -->
-                <div class="p-8 rounded-2xl bg-slate-900 border border-slate-800 hover:border-brand/50 hover:bg-slate-800/80 transition-all duration-300 group hover:-translate-y-2 reveal delay-child-2">
+                <div class="p-8 rounded-2xl bg-slate-900 border border-slate-800 hover:border-slate-600 transition-all duration-300 group hover:-translate-y-2 reveal delay-child-2 shadow-lg hover:shadow-slate-900/50">
                     <div class="flex justify-between items-start mb-4">
-                         <div class="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center text-2xl">🎓</div>
-                         <span class="px-3 py-1 rounded-full border border-slate-700 text-xs font-mono text-slate-400">2017 Graduate</span>
+                         <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-2xl border border-slate-700">🎓</div>
+                         <span class="px-3 py-1 rounded-full border border-slate-700 text-xs font-mono text-slate-400">Class of 2017</span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-brand transition-colors">Jilin International Studies University</h3>
-                    <p class="text-sm text-slate-500 mb-4"></p>
-                    <div class="space-y-2 text-slate-400">
-                        <p><span class="text-brand">Major:</span> Spanish </p>
-                        <p><span class="text-brand">Degree:</span> Bachelor's </p>
+                    <h3 class="text-xl font-bold text-white mb-1 group-hover:text-brand transition-colors">
+                        <span class="lang-en">Jilin International Studies University</span>
+                        <span class="lang-cn hidden">吉林外国语大学</span>
+                    </h3>
+                    <p class="text-sm text-slate-500 mb-4">Jilin Huaqiao University of Foreign Languages</p>
+                    <div class="space-y-2 text-slate-400 text-sm">
+                        <p><span class="text-brand">Major:</span> 
+                            <span class="lang-en">Spanish Philology</span>
+                            <span class="lang-cn hidden">西班牙语语言文学</span>
+                        </p>
+                        <p><span class="text-brand">Degree:</span> 
+                            <span class="lang-en">Bachelor</span>
+                            <span class="lang-cn hidden">学士</span>
+                        </p>
                         <p><span class="text-brand">GPA:</span> 3.26</p>
                     </div>
                 </div>
@@ -605,7 +779,10 @@
             <div class="relative group overflow-hidden h-full reveal delay-child-2">
                 <img src="https://i.imgur.com/FDSsMue.jpeg" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100 saturate-[0.4] group-hover:saturate-100" alt="Gallery">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
-                <div class="absolute bottom-6 left-6 text-white font-mono opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">Stage & Performance</div>
+                <div class="absolute bottom-6 left-6 text-white font-mono opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                    <span class="lang-en">Stage & Performance</span>
+                    <span class="lang-cn hidden">舞台与表演</span>
+                </div>
             </div>
              <!-- Gallery 3 -->
             <div class="relative group overflow-hidden h-full reveal delay-child-3">
@@ -624,9 +801,13 @@
     <section id="contact" class="relative z-10 py-32 px-6">
         <div class="max-w-3xl mx-auto text-center space-y-12 reveal">
             <div class="space-y-4">
-                <h2 class="text-5xl md:text-7xl font-display font-bold text-white tracking-tight">Let's Create.</h2>
+                <h2 class="text-5xl md:text-7xl font-display font-bold text-white tracking-tight">
+                    <span class="lang-en">Let's Create.</span>
+                    <span class="lang-cn hidden">一起来做点事吧！</span>
+                </h2>
                 <p class="text-xl text-slate-400 max-w-xl mx-auto">
-                    Currently open for new opportunities in video production and content creation.
+                    <span class="lang-en">Currently open for new opportunities in video production and content creation.</span>
+                    <span class="lang-cn hidden">目前接受视频制作和内容创作方面的合作机会。</span>
                 </p>
             </div>
             
@@ -654,6 +835,60 @@
     <!-- Interactive Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Language Switcher Logic
+            const langSwitchBtn = document.getElementById('lang-switch');
+            const btnEn = document.getElementById('btn-en');
+            const btnCn = document.getElementById('btn-cn');
+            let currentLang = 'en'; // Default language
+
+            function setLanguage(lang) {
+                const enElements = document.querySelectorAll('.lang-en');
+                const cnElements = document.querySelectorAll('.lang-cn');
+
+                // Animate fade out
+                enElements.forEach(el => el.classList.add('opacity-0'));
+                cnElements.forEach(el => el.classList.add('opacity-0'));
+
+                setTimeout(() => {
+                    if (lang === 'en') {
+                        enElements.forEach(el => {
+                            el.classList.remove('hidden');
+                            el.classList.remove('opacity-0');
+                        });
+                        cnElements.forEach(el => {
+                            el.classList.add('hidden');
+                        });
+                        
+                        // Update Button Styles
+                        btnEn.classList.add('text-brand');
+                        btnEn.classList.remove('text-slate-500');
+                        btnCn.classList.remove('text-brand');
+                        btnCn.classList.add('text-slate-500');
+                    } else {
+                        cnElements.forEach(el => {
+                            el.classList.remove('hidden');
+                            el.classList.remove('opacity-0');
+                        });
+                        enElements.forEach(el => {
+                            el.classList.add('hidden');
+                        });
+
+                        // Update Button Styles
+                        btnCn.classList.add('text-brand');
+                        btnCn.classList.remove('text-slate-500');
+                        btnEn.classList.remove('text-brand');
+                        btnEn.classList.add('text-slate-500');
+                    }
+                }, 150); // Small delay for transition effect
+                
+                currentLang = lang;
+            }
+
+            langSwitchBtn.addEventListener('click', () => {
+                const newLang = currentLang === 'en' ? 'cn' : 'en';
+                setLanguage(newLang);
+            });
+
             // Intersection Observer for Entrance Animations
             const observerOptions = {
                 root: null,
@@ -665,7 +900,6 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
-                        // Keep observing to allow re-animation if you want, or unobserve to run once
                          observer.unobserve(entry.target); 
                     }
                 });
